@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.hawkular.agent.prometheus;
+package prometheus;
 
 import java.io.File;
 import java.io.InputStream;
@@ -25,13 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.hawkular.agent.prometheus.binary.BinaryPrometheusMetricDataParser;
-import org.hawkular.agent.prometheus.binary.BinaryPrometheusMetricsProcessor;
-import org.hawkular.agent.prometheus.walkers.LoggingPrometheusMetricsWalker;
-import org.hawkular.agent.prometheus.walkers.PrometheusMetricsWalker;
 import org.jboss.logging.Logger.Level;
 import org.junit.Assert;
 import org.junit.Test;
+import prometheus.binary.BinaryPrometheusMetricDataParser;
+import prometheus.binary.BinaryPrometheusMetricsProcessor;
+import prometheus.walkers.LoggingPrometheusMetricsWalker;
+import prometheus.walkers.PrometheusMetricsWalker;
 
 import io.prometheus.client.Metrics.MetricFamily;
 
@@ -57,7 +57,7 @@ public class BinaryPrometheusParserTest {
         final AtomicInteger familyCount = new AtomicInteger(0);
         final AtomicInteger fullCount = new AtomicInteger(0);
         PrometheusMetricsWalker walker = new LoggingPrometheusMetricsWalker(Level.INFO) {
-            public void walkMetricFamily(org.hawkular.agent.prometheus.types.MetricFamily family, int index) {
+            public void walkMetricFamily(prometheus.types.MetricFamily family, int index) {
                 super.walkMetricFamily(family, index);
                 familyCount.incrementAndGet();
                 fullCount.addAndGet(family.getMetrics().size());
@@ -85,7 +85,7 @@ public class BinaryPrometheusParserTest {
         final AtomicInteger familyCount = new AtomicInteger(0);
         final AtomicInteger fullCount = new AtomicInteger(0);
         PrometheusMetricsWalker walker = new LoggingPrometheusMetricsWalker(Level.INFO) {
-            public void walkMetricFamily(org.hawkular.agent.prometheus.types.MetricFamily family, int index) {
+            public void walkMetricFamily(prometheus.types.MetricFamily family, int index) {
                 super.walkMetricFamily(family, index);
                 familyCount.incrementAndGet();
                 fullCount.addAndGet(family.getMetrics().size());
@@ -108,7 +108,7 @@ public class BinaryPrometheusParserTest {
 
         // test the scrape() method
         scraper = new PrometheusScraper(testDataUrl, PrometheusDataFormat.BINARY);
-        List<org.hawkular.agent.prometheus.types.MetricFamily> allFamilies = scraper.scrape();
+        List<prometheus.types.MetricFamily> allFamilies = scraper.scrape();
         Assert.assertEquals(71, allFamilies.size());
     }
 }

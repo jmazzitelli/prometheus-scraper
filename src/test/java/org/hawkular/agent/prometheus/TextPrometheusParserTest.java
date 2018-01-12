@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.hawkular.agent.prometheus;
+package prometheus;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -23,19 +23,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.hawkular.agent.prometheus.text.TextPrometheusMetricDataParser;
-import org.hawkular.agent.prometheus.text.TextPrometheusMetricsProcessor;
-import org.hawkular.agent.prometheus.types.Counter;
-import org.hawkular.agent.prometheus.types.Gauge;
-import org.hawkular.agent.prometheus.types.Histogram;
-import org.hawkular.agent.prometheus.types.MetricFamily;
-import org.hawkular.agent.prometheus.types.MetricType;
-import org.hawkular.agent.prometheus.types.Summary;
-import org.hawkular.agent.prometheus.walkers.LoggingPrometheusMetricsWalker;
-import org.hawkular.agent.prometheus.walkers.PrometheusMetricsWalker;
 import org.jboss.logging.Logger.Level;
 import org.junit.Assert;
 import org.junit.Test;
+import prometheus.text.TextPrometheusMetricDataParser;
+import prometheus.text.TextPrometheusMetricsProcessor;
+import prometheus.types.Counter;
+import prometheus.types.Gauge;
+import prometheus.types.Histogram;
+import prometheus.types.MetricFamily;
+import prometheus.types.MetricType;
+import prometheus.types.Summary;
+import prometheus.walkers.LoggingPrometheusMetricsWalker;
+import prometheus.walkers.PrometheusMetricsWalker;
 
 public class TextPrometheusParserTest {
 

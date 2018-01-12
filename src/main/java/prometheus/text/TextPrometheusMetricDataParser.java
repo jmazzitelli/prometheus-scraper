@@ -1,20 +1,4 @@
-/*
- * Copyright 2015-2016 Red Hat, Inc. and/or its affiliates
- * and other contributors as indicated by the @author tags.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package org.hawkular.agent.prometheus.text;
+package prometheus.text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,16 +8,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hawkular.agent.prometheus.PrometheusMetricDataParser;
-import org.hawkular.agent.prometheus.Util;
-import org.hawkular.agent.prometheus.types.Counter;
-import org.hawkular.agent.prometheus.types.Gauge;
-import org.hawkular.agent.prometheus.types.Histogram;
-import org.hawkular.agent.prometheus.types.Metric;
-import org.hawkular.agent.prometheus.types.MetricFamily;
-import org.hawkular.agent.prometheus.types.MetricType;
-import org.hawkular.agent.prometheus.types.Summary;
 import org.jboss.logging.Logger;
+import prometheus.PrometheusMetricDataParser;
+import prometheus.Util;
+import prometheus.types.Counter;
+import prometheus.types.Gauge;
+import prometheus.types.Histogram;
+import prometheus.types.Metric;
+import prometheus.types.MetricFamily;
+import prometheus.types.MetricType;
+import prometheus.types.Summary;
 
 /**
  * Provides a method that can scrape Permetheus text metric data from input streams.

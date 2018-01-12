@@ -64,7 +64,7 @@
               <minimizeJar>true</minimizeJar>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>org.hawkular.agent.prometheus.PrometheusScraperCli</mainClass>
+                  <mainClass>prometheus.PrometheusScraperCli</mainClass>
                 </transformer>
               </transformers>
             </configuration>

@@ -1,28 +1,12 @@
-/*
- * Copyright 2015-2016 Red Hat, Inc. and/or its affiliates
- * and other contributors as indicated by the @author tags.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package org.hawkular.agent.prometheus;
+package prometheus;
 
 import java.io.InputStream;
 
-import org.hawkular.agent.prometheus.types.Counter;
-import org.hawkular.agent.prometheus.types.Gauge;
-import org.hawkular.agent.prometheus.types.MetricFamily;
-import org.hawkular.agent.prometheus.walkers.PrometheusMetricsWalker;
 import org.jboss.logging.Logger;
+import prometheus.types.Counter;
+import prometheus.types.Gauge;
+import prometheus.types.MetricFamily;
+import prometheus.walkers.PrometheusMetricsWalker;
 
 /**
  * A processor is responsible for iterating over a collection of metric families found in a specific
@@ -67,7 +51,7 @@ public abstract class PrometheusMetricsProcessor<T> {
             T metricFamily = parser.parse(); // prime the pump
 
             while (metricFamily != null) {
-                org.hawkular.agent.prometheus.types.MetricFamily convertedMetricFamily = convert(metricFamily);
+                prometheus.types.MetricFamily convertedMetricFamily = convert(metricFamily);
 
                 // let the walker know we are traversing a new family of metrics
                 walker.walkMetricFamily(convertedMetricFamily, familyIndex++);
@@ -75,7 +59,7 @@ public abstract class PrometheusMetricsProcessor<T> {
                 // walk through each metric in the family
                 int metricIndex = 0;
 
-                for (org.hawkular.agent.prometheus.types.Metric metric : convertedMetricFamily.getMetrics()) {
+                for (prometheus.types.Metric metric : convertedMetricFamily.getMetrics()) {
                     switch (convertedMetricFamily.getType()) {
                         case COUNTER:
                             walker.walkCounterMetric(convertedMetricFamily, (Counter) metric, metricIndex);
@@ -87,12 +71,12 @@ public abstract class PrometheusMetricsProcessor<T> {
 
                         case SUMMARY:
                             walker.walkSummaryMetric(convertedMetricFamily,
-                                    ((org.hawkular.agent.prometheus.types.Summary) metric), metricIndex);
+                                    ((prometheus.types.Summary) metric), metricIndex);
                             break;
 
                         case HISTOGRAM:
                             walker.walkHistogramMetric(convertedMetricFamily,
-                                    ((org.hawkular.agent.prometheus.types.Histogram) metric), metricIndex);
+                                    ((prometheus.types.Histogram) metric), metricIndex);
                             break;
                     }
 

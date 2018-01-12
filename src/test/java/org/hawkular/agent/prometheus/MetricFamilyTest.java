@@ -14,16 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.hawkular.agent.prometheus;
+package prometheus;
 
-import org.hawkular.agent.prometheus.types.Counter;
-import org.hawkular.agent.prometheus.types.Gauge;
-import org.hawkular.agent.prometheus.types.Histogram;
-import org.hawkular.agent.prometheus.types.MetricFamily;
-import org.hawkular.agent.prometheus.types.MetricType;
-import org.hawkular.agent.prometheus.types.Summary;
 import org.junit.Assert;
 import org.junit.Test;
+import prometheus.types.Counter;
+import prometheus.types.Gauge;
+import prometheus.types.Histogram;
+import prometheus.types.MetricFamily;
+import prometheus.types.MetricType;
+import prometheus.types.Summary;
 
 public class MetricFamilyTest {
     @Test
