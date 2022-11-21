@@ -3,21 +3,12 @@ package prometheus.text;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.jboss.logging.Logger;
 import prometheus.PrometheusMetricDataParser;
 import prometheus.Util;
-import prometheus.types.Counter;
-import prometheus.types.Gauge;
-import prometheus.types.Histogram;
-import prometheus.types.Metric;
-import prometheus.types.MetricFamily;
-import prometheus.types.MetricType;
-import prometheus.types.Summary;
+import prometheus.types.*;
 
 /**
  * Provides a method that can scrape Permetheus text metric data from input streams.
@@ -46,7 +37,7 @@ public class TextPrometheusMetricDataParser extends PrometheusMetricDataParser<M
         public String help = "";
         public MetricType type = null;
         public List<String> allowedNames = new ArrayList<>();
-        public List<TextSample> textSamples = new ArrayList<>();
+        public Set<TextSample> textSamples = new LinkedHashSet<>();
 
         // starts a fresh metric family
         public void clear() {
@@ -147,6 +138,12 @@ public class TextPrometheusMetricDataParser extends PrometheusMetricDataParser<M
                                 hBuilder.addBucket(Util.convertStringToDouble(bucket),
                                         (long)Util.convertStringToDouble(textSample.getValue()));
                             }
+                            break;
+                        case UNTYPED:
+                            builders.put(textSample.getLabels(),
+                                    new Untyped.Builder().setName(name)
+                                            .setValue(Util.convertStringToDouble(textSample.getValue()))
+                                            .addLabels(textSample.getLabels()));
                             break;
                     }
                 } catch (Exception e) {
@@ -253,6 +250,9 @@ public class TextPrometheusMetricDataParser extends PrometheusMetricDataParser<M
                                 context.allowedNames.add(context.name + "_sum");
                                 context.allowedNames.add(context.name + "_bucket");
                                 break;
+                            case UNTYPED:
+                                context.allowedNames.add(context.name);
+                                break;
                         }
                     } else {
                         // ignore other tokens - probably a comment
@@ -260,6 +260,13 @@ public class TextPrometheusMetricDataParser extends PrometheusMetricDataParser<M
                 } else {
                     // parse the sample line that contains a single metric (or part of a metric as in summary/histo)
                     TextSample sample = parseSampleLine(line);
+                    if (context.type == null) {
+                        context.type = MetricType.UNTYPED;
+                    }
+                    if (MetricType.UNTYPED.equals(context.type) && context.allowedNames.isEmpty()) {
+                        context.allowedNames.add(sample.getName());
+                        context.name = sample.getName();
+                    }
                     if (!context.allowedNames.contains(sample.getName())) {
                         if (!context.name.isEmpty()) {
                             // break and we'll finish the metric family we previously were building up

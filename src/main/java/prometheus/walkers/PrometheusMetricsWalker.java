@@ -2,11 +2,7 @@ package prometheus.walkers;
 
 import java.util.Map;
 
-import prometheus.types.Counter;
-import prometheus.types.Gauge;
-import prometheus.types.Histogram;
-import prometheus.types.MetricFamily;
-import prometheus.types.Summary;
+import prometheus.types.*;
 
 /**
  * Implementors iterate a collection of metric families and their metrics.
@@ -68,6 +64,15 @@ public interface PrometheusMetricsWalker {
      * @param index index of the metric being processed, where 0 is the first one.
      */
     void walkHistogramMetric(MetricFamily family, Histogram histogram, int index);
+
+    /**
+     * Called when a new untyped metric is found.
+     *
+     * @param family information about the family being traversed such as the name, help description, etc.
+     * @param untyped the metric being processed
+     * @param index index of the metric being processed, where 0 is the first one.
+     */
+    void walkUntypedMetric(MetricFamily family, Untyped untyped, int index);
 
     /**
      * Convienence method that takes the given label list and returns a string in the form of

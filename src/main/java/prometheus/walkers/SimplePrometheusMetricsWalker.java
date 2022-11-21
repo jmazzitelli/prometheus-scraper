@@ -2,11 +2,7 @@ package prometheus.walkers;
 
 import java.net.URL;
 
-import prometheus.types.Counter;
-import prometheus.types.Gauge;
-import prometheus.types.Histogram;
-import prometheus.types.MetricFamily;
-import prometheus.types.Summary;
+import prometheus.types.*;
 
 public class SimplePrometheusMetricsWalker implements PrometheusMetricsWalker {
 
@@ -82,5 +78,14 @@ public class SimplePrometheusMetricsWalker implements PrometheusMetricsWalker {
                 metric.getSampleCount(),
                 metric.getSampleSum(),
                 metric.getBuckets());
+    }
+
+    @Override
+    public void walkUntypedMetric(MetricFamily family, Untyped metric, int index) {
+        System.out.printf("  +%2d. %s%s [%f]\n",
+                index,
+                metric.getName(),
+                buildLabelListString(metric.getLabels(), "{", "}"),
+                metric.getValue());
     }
 }

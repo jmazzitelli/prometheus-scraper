@@ -3,11 +3,7 @@ package prometheus.walkers;
 import java.util.ArrayList;
 import java.util.List;
 
-import prometheus.types.Counter;
-import prometheus.types.Gauge;
-import prometheus.types.Histogram;
-import prometheus.types.MetricFamily;
-import prometheus.types.Summary;
+import prometheus.types.*;
 
 /**
  * This simply collects all metrics in all families and provides a list to the families.
@@ -62,5 +58,9 @@ public class CollectorPrometheusMetricsWalker implements PrometheusMetricsWalker
 
     @Override
     public void walkHistogramMetric(MetricFamily family, Histogram metric, int index) {
+    }
+
+    @Override
+    public void walkUntypedMetric(MetricFamily family, Untyped untyped, int index) {
     }
 }

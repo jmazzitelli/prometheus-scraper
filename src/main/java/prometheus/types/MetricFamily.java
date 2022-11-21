@@ -70,6 +70,9 @@ public class MetricFamily {
             case HISTOGRAM:
                 expectedMetricClassType = Histogram.class;
                 break;
+            case UNTYPED:
+                expectedMetricClassType = Untyped.class;
+                break;
             default:
                 throw new IllegalArgumentException("Invalid type: " + builder.type);
         }
