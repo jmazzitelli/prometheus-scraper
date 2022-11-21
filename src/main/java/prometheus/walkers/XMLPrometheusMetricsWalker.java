@@ -3,13 +3,8 @@ package prometheus.walkers;
 import java.net.URL;
 
 import prometheus.Util;
-import prometheus.types.Counter;
-import prometheus.types.Gauge;
-import prometheus.types.Histogram;
+import prometheus.types.*;
 import prometheus.types.Histogram.Bucket;
-import prometheus.types.MetricFamily;
-import prometheus.types.MetricType;
-import prometheus.types.Summary;
 import prometheus.types.Summary.Quantile;
 
 public class XMLPrometheusMetricsWalker implements PrometheusMetricsWalker {
@@ -23,7 +18,6 @@ public class XMLPrometheusMetricsWalker implements PrometheusMetricsWalker {
     /**
      * Use this constructor if you know the URL where the metric data came from.
      *
-     * @param metricFamilies
      * @param url the protocol endpoint that supplied the Prometheus metric data
      */
     public XMLPrometheusMetricsWalker(URL url) {
@@ -113,6 +107,16 @@ public class XMLPrometheusMetricsWalker implements PrometheusMetricsWalker {
             }
             System.out.printf("      </bucket>\n");
         }
+        System.out.printf("    </metric>\n");
+    }
+
+    @Override
+    public void walkUntypedMetric(MetricFamily family, Untyped metric, int index) {
+        System.out.printf("    <metric>\n");
+        System.out.printf("      <name>%s</name>\n", family.getName());
+        System.out.printf("      <type>%s</type>\n", MetricType.UNTYPED);
+        System.out.printf("      <labels>%s</labels>\n", buildLabelListString(metric.getLabels(), null, null));
+        System.out.printf("      <value>%s</value>\n", Util.convertDoubleToString(metric.getValue()));
         System.out.printf("    </metric>\n");
     }
 }

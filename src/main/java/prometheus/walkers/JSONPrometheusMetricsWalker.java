@@ -5,12 +5,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import prometheus.Util;
-import prometheus.types.Counter;
-import prometheus.types.Gauge;
-import prometheus.types.Histogram;
+import prometheus.types.*;
 import prometheus.types.Histogram.Bucket;
-import prometheus.types.MetricFamily;
-import prometheus.types.Summary;
 import prometheus.types.Summary.Quantile;
 
 public class JSONPrometheusMetricsWalker implements PrometheusMetricsWalker {
@@ -106,6 +102,18 @@ public class JSONPrometheusMetricsWalker implements PrometheusMetricsWalker {
         }
         System.out.printf("        \"count\":\"%d\",\n", metric.getSampleCount());
         System.out.printf("        \"sum\":\"%s\"\n", Util.convertDoubleToString(metric.getSampleSum()));
+        if ((index + 1) == family.getMetrics().size()) {
+            System.out.printf("      }\n");
+        } else {
+            System.out.printf("      },\n"); // there are more coming
+        }
+    }
+
+    @Override
+    public void walkUntypedMetric(MetricFamily family, Untyped metric, int index) {
+        System.out.printf("      {\n");
+        outputLabels(metric.getLabels());
+        System.out.printf("        \"value\":\"%s\"\n", Util.convertDoubleToString(metric.getValue()));
         if ((index + 1) == family.getMetrics().size()) {
             System.out.printf("      }\n");
         } else {

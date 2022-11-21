@@ -254,4 +254,29 @@ public class TextPrometheusParserTest {
         List<MetricFamily> allFamilies = scraper.scrape();
         Assert.assertEquals(72, allFamilies.size());
     }
+
+    @Test
+    public void testGetUntypedMetricsFromStream() throws Exception {
+        List<MetricFamily> metricFamilies = parseTestFile("prometheus-untyped.txt");
+
+        Assert.assertNotNull(metricFamilies);
+        Assert.assertEquals(229, metricFamilies.size());
+
+        // walk the data and make sure it has what we expect
+        final AtomicInteger familyCount = new AtomicInteger(0);
+        final AtomicInteger fullCount = new AtomicInteger(0);
+        PrometheusMetricsWalker walker = new LoggingPrometheusMetricsWalker(Level.INFO) {
+            public void walkMetricFamily(MetricFamily family, int index) {
+                super.walkMetricFamily(family, index);
+                familyCount.incrementAndGet();
+                fullCount.addAndGet(family.getMetrics().size());
+            }
+        };
+
+        try (InputStream testData = this.getClass().getClassLoader().getResourceAsStream("prometheus-untyped.txt")) {
+            new TextPrometheusMetricsProcessor(testData, walker).walk();
+        }
+        Assert.assertEquals(metricFamilies.size(), familyCount.get());
+        Assert.assertEquals(360, fullCount.get());
+    }
 }

@@ -3,6 +3,7 @@ package prometheus.types;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Superclass to all metrics. All metrics have name and labels.

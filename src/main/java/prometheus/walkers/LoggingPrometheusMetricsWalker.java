@@ -4,11 +4,7 @@ import java.util.Map;
 
 import org.jboss.logging.Logger;
 import org.jboss.logging.Logger.Level;
-import prometheus.types.Counter;
-import prometheus.types.Gauge;
-import prometheus.types.Histogram;
-import prometheus.types.MetricFamily;
-import prometheus.types.Summary;
+import prometheus.types.*;
 
 /**
  * This implementation simply logs the metric values.
@@ -76,6 +72,14 @@ public class LoggingPrometheusMetricsWalker implements PrometheusMetricsWalker {
                 metric.getSampleCount(),
                 metric.getSampleSum(),
                 metric.getBuckets());
+    }
+
+    @Override
+    public void walkUntypedMetric(MetricFamily family, Untyped metric, int index) {
+        log.logf(getLogLevel(), "UNTYPED: %s%s=%f",
+                metric.getName(),
+                buildLabelListString(metric.getLabels()),
+                metric.getValue());
     }
 
     /**

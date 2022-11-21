@@ -6,6 +6,7 @@ import org.jboss.logging.Logger;
 import prometheus.types.Counter;
 import prometheus.types.Gauge;
 import prometheus.types.MetricFamily;
+import prometheus.types.Untyped;
 import prometheus.walkers.PrometheusMetricsWalker;
 
 /**
@@ -77,6 +78,9 @@ public abstract class PrometheusMetricsProcessor<T> {
                         case HISTOGRAM:
                             walker.walkHistogramMetric(convertedMetricFamily,
                                     ((prometheus.types.Histogram) metric), metricIndex);
+                            break;
+                        case UNTYPED:
+                            walker.walkUntypedMetric(convertedMetricFamily, (Untyped) metric, metricIndex);
                             break;
                     }
 
